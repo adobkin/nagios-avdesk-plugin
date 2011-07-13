@@ -1,14 +1,3 @@
-/*
- * Copyright (c) Doctor Web, 2003-2011
- *
- * Following code is the property of Doctor Web, Ltd.
- * Dr.Web is a registred trademark of Doctor Web, Ltd.
- *
- * http://www.drweb.com
- * http://www.av-desk.com
- *
- */
-
 #ifndef PLATFORM_H
 #define	PLATFORM_H
 
