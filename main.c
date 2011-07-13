@@ -16,6 +16,7 @@ static void print_usage(void);
 static void print_help(void);
 static int process_arguments(int, char **);
 static int check_avdesk(void);
+static void socket_timeout_alarm_handler(int);
 
 void icavdesk_free(void *);
 
@@ -29,6 +30,10 @@ int main(int argc, char** argv) {
 	exit(STATE_UNKNOWN);
     }
     
+    /* initialize alarm signal handling */
+    signal (SIGALRM, socket_timeout_alarm_handler);
+    /* set socket timeout */
+    alarm (timeout);
     
     result = check_avdesk();
     return result;
@@ -154,7 +159,7 @@ static int check_avdesk(void) {
     char protocol[20];
     unsigned int i = 0;
     int rc = -1;
-    struct timeval tv;
+    //struct timeval tv;
     char *start = NULL;
     char *end = NULL;
     
@@ -180,10 +185,6 @@ static int check_avdesk(void) {
         return STATE_CRITICAL;
     }
     
-    tv.tv_sec = 1;
-    tv.tv_usec = 0;
-    
-    setsockopt(sd, SOL_SOCKET, SO_RCVTIMEO, (void *)&tv, sizeof(tv));
     rc = recv(sd, & in_buff, buff_len, 0);
     
     if(rc <= 0) {
@@ -220,4 +221,15 @@ static int check_avdesk(void) {
     
     printf("OK - Protocol: %s\n", protocol);
     return STATE_OK;
+}
+
+static void socket_timeout_alarm_handler(int sig)
+{
+    if (sig == SIGALRM) {
+        printf ("CRITICAL - Socket timeout after %d seconds\n", timeout);
+    } else {
+        printf ("CRITICAL - Abnormal timeout after %d seconds\n", timeout);
+    }
+
+    exit (STATE_CRITICAL);
 }
