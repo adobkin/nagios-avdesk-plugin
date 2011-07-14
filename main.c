@@ -1,9 +1,5 @@
 #include "common.h"
 
-const char *progname = "check_avdesk";
-const char *copyright = "2011";
-const char *email = "anton.dobkin@gmail.com";
-
 unsigned int avdesk_agent_port = AGENT_PORT;
 char *avdesk_host = NULL;
 int sd = -1;
@@ -25,7 +21,7 @@ int main(int argc, char** argv) {
     int result = STATE_UNKNOWN;
     
     if (process_arguments (argc, argv) == ERROR) {
-        printf ("%s: Could not parse arguments\n", progname);
+        printf ("%s: Could not parse arguments\n", ICAVDESK_NAME);
 	print_usage();
 	exit(STATE_UNKNOWN);
     }
@@ -68,7 +64,7 @@ static int process_arguments (int argc, char **argv) {
                 exit (STATE_OK);
                 break;
              case 'V':
-                printf("%s %s\n", progname, ICAVDESK_VERSION_STRING);
+                printf("%s %s\n", ICAVDESK_NAME, ICAVDESK_VERSION_STRING);
                 exit (STATE_OK);
                 break;
              case 'v':
@@ -84,7 +80,7 @@ static int process_arguments (int argc, char **argv) {
                  p = strdup (optarg);
                  port = atoi(p);
                  if( port < 1 || port > 65535 ) {
-                     printf("%s: Invalid agent port number '%s'\n", progname, p);
+                     printf("%s: Invalid agent port number '%s'\n", ICAVDESK_NAME, p);
                      icavdesk_free(p);
                      exit(STATE_UNKNOWN);
                  }
@@ -96,7 +92,7 @@ static int process_arguments (int argc, char **argv) {
                  p = strdup (optarg);
                  tmout = atoi(p);
                  if(tmout < 1 ) {
-                     printf("%s: Timeout interval must be a positive integer\n", progname);
+                     printf("%s: Timeout interval must be a positive integer\n", ICAVDESK_NAME);
                      icavdesk_free(p);
                      exit(STATE_UNKNOWN);
                  }
@@ -112,7 +108,7 @@ static int process_arguments (int argc, char **argv) {
     
     if(avdesk_host == NULL) {
         icavdesk_free(avdesk_host);
-        printf("%s: You must specify a Dr.Web ES/AV-Desk server IP address or host name", progname);
+        printf("%s: You must specify a Dr.Web ES/AV-Desk server IP address or host name", ICAVDESK_NAME);
         exit(STATE_UNKNOWN);
     }
     
@@ -121,12 +117,12 @@ static int process_arguments (int argc, char **argv) {
 
 static void print_usage(void) {
     printf("%s\n", "Usage:");
-    printf("  %s -H <host> [-p <port>] [-4] [-t <timeout>]\n", progname);
+    printf("  %s -H <host> [-p <port>] [-4] [-t <timeout>]\n", ICAVDESK_NAME);
 }
 
 static void print_help(void) {
-    printf("%s %s\n", progname, ICAVDESK_VERSION_STRING);
-    printf("Copyright (c) 2011 %s\n", ICAVDESK_AUTHOR);
+    printf("%s %s\n", ICAVDESK_NAME, ICAVDESK_VERSION_STRING);
+    printf("Copyright (c) 2011 %s <%s>\n", ICAVDESK_AUTHOR, ICAVDESK_AUTHOR_EMAIL);
     
     printf("This plugin checks the Dr.Web ES/AV-Desk service on the specified host and port\n");
     printf("\n");
@@ -141,7 +137,7 @@ static void print_help(void) {
     printf("-t, --timeout=INTEGER\n");
     printf("    Seconds before connection times out (default: %d)\n", DEFAULT_SOCKET_TIMEOUT);
     
-    printf("\nSend email to %s if you have questions\nregarding use of this software or to submit patches or suggest improvements\n", email);
+    printf("\nSend email to %s if you have questions\nregarding use of this software or to submit patches or suggest improvements\n", ICAVDESK_AUTHOR_EMAIL);
     printf("\nThe icinga plugins come with ABSOLUTELY NO WARRANTY. You may redistribute\ncopies of the plugins under the terms of the GNU General Public License.\nFor more information about these matters, see the file named COPYING.\n");
 }
 
