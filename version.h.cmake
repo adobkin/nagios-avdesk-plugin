@@ -3,7 +3,8 @@
 
 #define ICAVDESK_NAME 		"${PROJECT_NAME}"
 
-#define ICAVDESK_AUTHOR 	"Anton Dobkin <anton.dobkin@gmail.com>"
+#define ICAVDESK_AUTHOR 	"Anton Dobkin"
+#define ICAVDESK_AUTHOR_EMAIL 	"anton.dobkin@gmail.com"
 
 #define ICAVDESK_VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 
